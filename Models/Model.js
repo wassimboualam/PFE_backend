@@ -15,12 +15,14 @@ class Model {
 
         // for when an instance is created, it represents a request.
         // requestState can include `where` statements, `limit` statements, `order by` statements...
-        this.requestState = newState;
+        // this.requestState = newState;
     }
 
     static async execStatement(statement, stmtParam) {
         return await new Promise((resolve, reject) => 
-            con.execute(statement, [stmtParam], function (error,result) {if(error) reject(error);resolve(result);}));
+            stmtParam===undefined? con.execute(statement, function (error,result) {if(error)reject(error);resolve(result);}):
+            con.query(statement, [stmtParam], function (error,result) {if(error)reject(error);resolve(result);})
+        );
     }
     
     static async getAll() {
@@ -32,7 +34,7 @@ class Model {
     }
 
     static async create(newValues=[]) {
-        return await this.execStatement(`INSERT INTO ${this._tableName} VALUES `, newValues);
+        return await this.execStatement(`INSERT INTO ${this._tableName} (${this._fillable.join(",")}) VALUES ?`, newValues);
     }
 
     static async update(id, newValues={}) {
@@ -53,10 +55,16 @@ class Model {
             throw new Error("tableName not present, must be specified");
         }
     }
+    static checkFillable() {
+        if (!Object.hasOwn(this,"_fillable")) {
+            throw new Error("fillable not present, must be specified or you can't add a thing");
+        }
+    }
 
     // Initialization
     static initialize() {
         this.checkTableName();
+        this.checkFillable();
     }
 
 }
