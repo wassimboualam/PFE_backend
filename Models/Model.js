@@ -2,11 +2,12 @@ const con = require("../config/connect");
 
 class Model {
     static con = con;
+    static _pk = ["id"];
     // constructor shares static methods with instances and stores state of request for instance methods
     constructor(newState) {
         // gets all static methods
         const statics = Object.getOwnPropertyNames(this.constructor)
-            .filter(prop => !['prototype', 'name', 'length'].includes(prop));
+            .filter(prop => typeof prop.constructor == "function" && !['prototype', 'name', 'length'].includes(prop));
 
         // binds them to instance
         for (const method of statics) {
@@ -25,12 +26,17 @@ class Model {
         );
     }
     
+    // CRUD methods
     static async getAll() {
         return await this.execStatement(`SELECT * FROM ${this._tableName}`);
     }
 
     static async get(id) {
         return await this.execStatement(`SELECT * FROM ${this._tableName} WHERE id = ${id}`);
+    }
+
+    static async findBy(field, value) {
+        return await this.execStatement(`SELECT * FROM ${this._tableName} WHERE ${field} = ${value}`);
     }
 
     static async create(newValues=[]) {
@@ -50,21 +56,15 @@ class Model {
     }
 
     // checks for mandatory properties
-    static checkTableName() {
-        if (!Object.hasOwn(this,"_tableName")) {
-            throw new Error("tableName not present, must be specified");
-        }
-    }
-    static checkFillable() {
-        if (!Object.hasOwn(this,"_fillable")) {
-            throw new Error("fillable not present, must be specified or you can't add a thing");
+    static checkStaticProperty(propertyName) {
+        if (!Object.hasOwn(this,propertyName)) {
+            throw new Error(propertyName+" not present, must be specified or you can't add a thing");
         }
     }
 
     // Initialization
     static initialize() {
-        this.checkTableName();
-        this.checkFillable();
+        ["_tableName", "_fillable"].forEach(v=> this.checkStaticProperty(v));
     }
 
 }
