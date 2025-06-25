@@ -14,9 +14,6 @@ class Model {
             this[method] = this.constructor[method].bind(this.constructor);
         }
 
-        // for when an instance is created, it represents a request.
-        // requestState can include `where` statements, `limit` statements, `order by` statements...
-        // this.requestState = newState;
     }
 
     static async execStatement(statement, stmtParam) {

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "db_setup": "bash mysql_exec_file.sh tables/carts.sql & bash mysql_exec_file.sh tables/users.sql & bash mysql_exec_file.sh tables/products.sql &"
+    "db_setup": "bash Tables/tables.sh"
   },
   "keywords": [],
   "author": "",
