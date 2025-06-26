@@ -1,4 +1,3 @@
-const Cart = require("./CartModel");
 const Model = require("./Model");
 
 class User extends Model {
