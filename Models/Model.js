@@ -16,6 +16,7 @@ class Model {
 
     }
 
+    // executes a SQL statement
     static async execStatement(statement, stmtParam) {
         return await new Promise((resolve, reject) => 
             stmtParam===undefined? con.execute(statement, function (error,result) {if(error)reject(error);resolve(result);}):
@@ -64,6 +65,16 @@ class Model {
         ["_tableName", "_fillable"].forEach(v=> this.checkStaticProperty(v));
     }
 
+}
+
+// This function returns a conditional statement involving the primary key of a table that work with the `WHERE` or `ON` statments
+function checkPrimaryKey(values ,pkfields = ['id']) {
+    let conStmt = "";
+    pkfields.forEach((field, index) => {
+        const value = values[index];
+        conStmt = ` ${field} = ${value} ` + index>0?"AND ":"" + conStmt;
+    });
+    return conStmt;
 }
 
 module.exports = Model;

@@ -3,12 +3,8 @@ const Model = require("./Model");
 
 class User extends Model {
     static _tableName = "users";
-    static _fillable = ['username'];
-    static _pk = ["id"];
+    static _fillable = ['name', "address", "password", "role"];
 
-    static async getCart(id) {
-        return Cart.findBy("user_id", id);
-    }
 
     static {
         super.initialize();
