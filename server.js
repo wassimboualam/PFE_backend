@@ -3,6 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const expressListEndpoints = require("express-list-endpoints");
 const session = require("express-session");
+const parkingRouter = require("./Routers/parking");
 const app = express();
 
 app.use(express.json());
@@ -29,6 +30,8 @@ app.use((req, res, next) => {
 
 
 app.use(authRouter);
+
+app.use(parkingRouter);
 
 app.get("/", (req,res) => {
 

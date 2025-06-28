@@ -11,4 +11,4 @@ class ParkingTariff extends Model {
     }
 }
 
-module.exports = Expense;
+module.exports = ParkingTariff;
