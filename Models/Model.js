@@ -18,7 +18,6 @@ class Model {
 
     // executes a SQL statement
     static async execStatement(statement, stmtParam) {
-        console.log(statement);
         return await new Promise((resolve, reject) => 
             stmtParam===undefined? con.execute(statement, function (error,result) {if(error)reject(error);resolve(result);}):
             con.query(statement, [stmtParam], function (error,result) {if(error)reject(error);resolve(result);})

@@ -16,7 +16,7 @@ authRouter.post('/api/auth/login', async (req, res) => {
     res.json({ user });
 });
 
-app.get('/api/auth/me', (req, res) => {
+authRouter.get('/api/auth/me', (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ message: 'Not authenticated' });
   }
