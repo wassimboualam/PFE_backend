@@ -4,6 +4,7 @@ const express = require("express");
 const expressListEndpoints = require("express-list-endpoints");
 const session = require("express-session");
 const parkingRouter = require("./Routers/parking");
+const userRouter = require("./Routers/user");
 const app = express();
 
 app.use(express.json());
@@ -30,6 +31,8 @@ app.use((req, res, next) => {
 
 
 app.use(authRouter);
+
+app.use(userRouter);
 
 app.use(parkingRouter);
 

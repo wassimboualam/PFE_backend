@@ -16,14 +16,5 @@ authRouter.post('/api/auth/login', async (req, res) => {
     res.json({ user });
 });
 
-authRouter.get('/api/auth/me', (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ message: 'Not authenticated' });
-  }
-  User.get(req.session.user.id)
-    .then(user => res.json({ user }))
-    .catch(err => res.status(500).json({ message: err.message }));
-});
-
 
 module.exports = authRouter;
